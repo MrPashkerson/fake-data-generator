@@ -1,4 +1,4 @@
-const { Faker, ne} = require('@faker-js/faker');
+const { Faker } = require('@faker-js/faker');
 const { Parser } = require('json2csv');
 const regionData = require('../dictionaries/regionData');
 
@@ -14,10 +14,16 @@ class DataService {
         }
         seed += start;
         customFaker.seed(seed);
+        let start_number;
+        if (start === 0) {
+            start_number = 0;
+        } else {
+            start_number = (start + 1) * count;
+        }
 
         const data = [];
         for (let i = start; i < start + count; i++) {
-            let row = this.generateFakeDataRow(region, customFaker, i);
+            let row = this.generateFakeDataRow(region, customFaker, start_number++);
             row = this.addErrorToRow(row, errorsQuantity, region, customFaker, ["fullName", "address"]);
             data.push(row);
         }
@@ -61,7 +67,7 @@ class DataService {
         const length = str.length;
         return [
             {type: 0, weight: length > 8 ? 1 : 0},
-            {type: 1, weight: length < 60 ? 1 : 0},
+            {type: 1, weight: length < 40 ? 1 : 0},
             {type: 2, weight: length > 1 ? 1 : 0}
         ];
     }

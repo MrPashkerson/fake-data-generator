@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {FC} from 'react';
+import MainPage from "./components/MainPage";
 
-function App() {
+const App: FC = () => {
   return (
-    <div className="App">
-
+    <div>
+      <MainPage/>
     </div>
   );
 }

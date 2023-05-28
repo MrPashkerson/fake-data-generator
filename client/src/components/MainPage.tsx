@@ -21,7 +21,6 @@ const MainPage: FC = () => {
     ];
 
     const fetchMoreData = async () => {
-        console.log("kek")
         try {
             const response = await DataService.getData(region, errors, seed, page, 10);
             const moreData = response.data;

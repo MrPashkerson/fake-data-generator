@@ -4,15 +4,19 @@ const regionData = require('../dictionaries/regionData');
 
 class DataService {
     async generateData(region, errorsQuantity, seed, start, count) {
-        let customFaker;
+        let customFaker, helperFaker;
         try {
             customFaker = new Faker({
+                locale: [regionData[region].fakerLocale],
+            });
+            helperFaker = new Faker({
                 locale: [regionData[region].fakerLocale],
             });
         } catch (e) {
             throw e;
         }
         seed += start;
+        helperFaker.seed(seed);
         customFaker.seed(seed);
         let start_number;
         if (start === 0) {
@@ -24,7 +28,7 @@ class DataService {
         const data = [];
         for (let i = start; i < start + count; i++) {
             let row = this.generateFakeDataRow(region, customFaker, start_number++);
-            row = this.addErrorToRow(row, errorsQuantity, region, customFaker, ["fullName", "address"]);
+            row = this.addErrorToRow(row, errorsQuantity, region, helperFaker, ["fullName", "address", "phone"]);
             data.push(row);
         }
         return data;
@@ -45,6 +49,10 @@ class DataService {
                     row[key] = this.deleteRandomChar(row[key], faker);
                     break;
                 case 1:
+                    if (key === "phone") {
+                        row[key] = this.addRandomDigit(row[key], faker);
+                        break;
+                    }
                     row[key] = this.addRandomChar(row[key], region, faker);
                     break;
                 case 2:
@@ -66,8 +74,8 @@ class DataService {
     getErrorTypeWeights(str) {
         const length = str.length;
         return [
-            {type: 0, weight: length > 8 ? 1 : 0},
-            {type: 1, weight: length < 40 ? 1 : 0},
+            {type: 0, weight: length > 10 ? 1 : 0},
+            {type: 1, weight: length < 35 ? 1 : 0},
             {type: 2, weight: length > 1 ? 1 : 0}
         ];
     }
@@ -91,8 +99,14 @@ class DataService {
     }
 
     addRandomChar(str, region, faker) {
-        const addIndex = faker.number.int({min: 0, max: str.length});
+        const addIndex = faker.number.int({min: 0, max: str.length}); // here
         const randomChar = faker.helpers.arrayElement(regionData[region].alphabet);
+        return str.slice(0, addIndex) + randomChar + str.slice(addIndex);
+    }
+
+    addRandomDigit(str, faker) {
+        const addIndex = faker.number.int({min: 0, max: str.length}); // here
+        const randomChar = faker.helpers.arrayElement("0123456789");
         return str.slice(0, addIndex) + randomChar + str.slice(addIndex);
     }
 

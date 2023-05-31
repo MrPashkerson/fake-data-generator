@@ -62,11 +62,12 @@ const MainPage: FC = () => {
                         <hr />
                     </Col>
                 </Row>
-                <Row className="mb-3">
+
+                <Row className="mb-3 align-items-center">
                     <Col xs={2} className="text-start pl-12 fw-bolder">
-                        <Form.Label>Region:</Form.Label>
+                        <Form.Label className="mb-0">Region:</Form.Label>
                     </Col>
-                    <Col>
+                    <Col xs={2} >
                         <FormSelect value={region} onChange={(e) => setRegion(e.target.value)}>
                             {regions.map(region => (
                                 <option key={region.value} value={region.value}>{region.label}</option>
@@ -75,12 +76,12 @@ const MainPage: FC = () => {
                     </Col>
                 </Row>
 
-                <Row className="mb-3">
+                <Row className="mb-3 align-items-center">
                     <Col xs={2} className="text-start pl-12 fw-bolder">
-                        <Form.Label>Errors quantity:</Form.Label>
+                        <Form.Label className="mb-0">Errors quantity:</Form.Label>
                     </Col>
 
-                    <Col>
+                    <Col xs={2}>
                         <Form.Control
                             type="number"
                             step="0.01"
@@ -96,12 +97,9 @@ const MainPage: FC = () => {
                             }}
                         />
                     </Col>
-                </Row>
 
-                <Row>
-                    <Col className="d-flex justify-content-center align-content-center">
+                    <Col xs={2} className="">
                         <Form.Range
-                            className="mb-3"
                             step="0.25"
                             min="0"
                             max="10"
@@ -111,11 +109,11 @@ const MainPage: FC = () => {
                     </Col>
                 </Row>
 
-                <Row className="mb-3">
+                <Row className="mb-3 align-items-center">
                     <Col xs={2} className="text-start pl-12 fw-bolder">
-                        <Form.Label>Seed:</Form.Label>
+                        <Form.Label className="mb-0">Seed:</Form.Label>
                     </Col>
-                    <Col xs={8}>
+                    <Col xs={2}>
                         <Form.Control
                         type="number"
                         min="0"
@@ -130,7 +128,7 @@ const MainPage: FC = () => {
                         }}
                         />
                     </Col>
-                    <Col xs={2} className="d-flex justify-content-center">
+                    <Col xs={2} className="">
                         <Button
                             onClick={() => setSeed(Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER))}>
                             Random
